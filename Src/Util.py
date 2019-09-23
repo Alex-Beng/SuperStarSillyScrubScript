@@ -4,7 +4,8 @@ import datetime
 import win32gui, win32ui, win32con, win32api
 from ctypes import windll
 import numpy
-
+import base64
+from PIL import Image
 
 DEBUGING = True
 # DEBUGING = False
@@ -45,3 +46,9 @@ def GetScreenshot(win_handle, win_rect):
     win32gui.ReleaseDC(hWnd,hWndDC)
 
     return im_opencv
+def GetScreenshotByAdb():
+    os.system('adb shell screencap -p /sdcard/temp.png')
+    os.system('adb pull /sdcard/temp.png ../Pics/')
+    image = cv2.imread("../Pics/temp.png")
+    image = cv2.resize(image, (image.shape[0]//2, image.shape[1]//2))
+    return image
